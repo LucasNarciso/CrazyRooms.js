@@ -1,0 +1,77 @@
+.ContainerPrincipalJogo {
+    position: relative;
+    background-color: #0F1A20;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+    .ContainerPrincipalJogo{
+        width: 100%;
+        height: 92vh;
+    }
+}
+
+.ConteudoTerminal {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    color: #ADA296;
+    padding: 10px;
+    overflow: auto;
+}
+
+.BarraTerminal {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    gap: 10px;
+    padding: 5px 10px;
+}
+
+#campo{
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #ADA296;
+    border-radius: 3px;
+    color: #ADA296;
+    padding: 0px 5px;
+}
+
+#campo:focus{
+    border: 1px solid #ADA296;
+}
+#campo:active{
+    border: 1px solid #ADA296;
+}
+
+#botao{
+    width: 100px;
+    height: 100%;
+    background-color: #ADA296;
+    border: none;
+    color: #0F1A20;
+    transition: 0.1s;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+#botao:hover{
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.mensagem{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.escolha{
+    gap: 8px;
+}

@@ -1,0 +1,37 @@
+.conteiner{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+#botoes{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#botoes button{
+    border-radius: 3px;
+    border: none;
+    background-color: #ADA296;
+    width: 160px;
+    height: 45px;
+
+    font-size: 16px;
+    transform: 0.2s;
+}
+
+#botoes button:hover{
+    background-color: #ada296bb;
+    transform: scale(1.04);
+    cursor: pointer;
+}

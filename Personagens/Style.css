@@ -1,0 +1,46 @@
+.conteiner{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+#botoes{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 330px;
+    height: 170px;
+}
+.vazio::after{
+    content: "vazio";
+}
+
+.vazio:hover::after{
+    content: " +"
+}
+
+.Titulo{
+    margin-top: 20px;
+    width: 330px;
+    text-align: center;
+}
+
+.Quantidade{
+    margin-bottom: 15px;
+}
+
+#botaoVoltar{
+    width: 85px;
+    height: 30px;
+}
