@@ -22,10 +22,15 @@
     width: 330px;
     height: 170px;
 }
+.vazio{
+    opacity: 0.5;
+}
 .vazio::after{
     content: "vazio";
 }
-
+.vazio:hover{
+    opacity: 1;
+}
 .vazio:hover::after{
     content: " +"
 }
