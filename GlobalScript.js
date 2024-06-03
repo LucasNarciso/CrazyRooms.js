@@ -4,12 +4,7 @@ function goOn(voltar, page){
     console.log(voltar)
     switch (page) {
         case "menu":
-            if(voltar == "voltar"){
-                document.querySelector('.conteiner').style.animation = ""
-                document.querySelector('.conteiner').classList.add('slideIn')
-            }else{
-                document.querySelector('.conteiner').classList.add('slideOut')
-            }
+            document.querySelector('.conteiner').classList.add('slideOut')
             setTimeout(() => {
                 window.location.href = "/menu"
             }, 200);
