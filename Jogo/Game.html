@@ -49,26 +49,33 @@
                 document.getElementById("botao").click();
             }
             });
-            escreverNoTerminal('jogo', 'Olá jogador! Bem vindo ao Crazy Rooms!');
-            escreverNoTerminal('jogo', 'Gostaria de informar o seu nome? Ou podemos escolher pra você?', ["Informar meu nome", "Deixar que escolham"]);
+            setTimeout(() => {
+                escreverNoTerminal('jogo', 'Olá jogador! Bem vindo ao Crazy Rooms!');
+                escreverNoTerminal('jogo', 'Gostaria de informar o seu nome? Ou podemos escolher pra você?', ["Informar meu nome", "Deixar que escolham"]);
+            }, 1000);
         }
 
         function escreverNoTerminal(origem, texto, opcoes){
             let terminal = document.querySelector('.ConteudoTerminal')
             if(origem == 'jogo'){
+                let idTexto = Math.random();
+                let idOpts = Math.random();
                 if(opcoes){
-                    let opcoesHTML = opcoes.map((opcao,index)=>`<p style="padding-left: 15px;">${index+1}. ${opcao}</p>`)
-                    console.log(opcoesHTML)
+                    let opcoesHTML = opcoes.map((opcao,index)=>`${index+1}. ${opcao}`)
+
                     terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem escolha">
-                        <p> ${texto}</p>
-                        <div class="opcoes">
-                            ${opcoesHTML.join('')}
+                        <p id="${idTexto}"></p>
+                        <div class="opcoes" id="${idOpts}">
+                            
                         </div>
                     </div>`)
+                    escreveTexto(texto, idTexto)
+                    escreveTexto(opcoesHTML, idOpts)
                 }else{
                     terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem">
-                        <p> ${texto}</p>
+                        <p id="${idTexto}"></p>
                     </div>`)
+                    escreveTexto(texto, idTexto)
                 }
             }else if(origem == 'jogador'){
                 terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem">
@@ -76,7 +83,33 @@
                 </div>`)
             }
         }
+
+        async function escreveTexto(texto, idDestino){
+
+            let textoSplit = []
+            if(texto.split){
+                textoSplit = texto.split('');
+                for (let i = 0; i < textoSplit.length; i++) {
+                    const char = textoSplit[i];
+                    document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`${char}`)
+                    await sleep(10)               
+                }
+            }else{
+                for (let j = 0; j < texto.length; j++) {
+                    textoSplit = texto[j].split('');
+                    for (let i = 0; i < textoSplit.length; i++) {
+                        const char = textoSplit[i];
+                        document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`${char}`)
+                        await sleep(10)               
+                    }
+                    document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<br>`)
+                }
+            }
+
+        }
         
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
     </script>
 </head>
 <body>

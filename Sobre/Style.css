@@ -1,0 +1,17 @@
+#logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.Titulo{
+    margin-top: 20px;
+    width: 330px;
+    text-align: center;
+}
+
+#botaoVoltar{
+    width: 85px;
+    height: 30px;
+}
