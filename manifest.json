@@ -1,14 +1,14 @@
 {
   "short_name": "Crazy Rooms",
   "name": "Um jogo  onde você explora salas geradas de forma aleatória.",
-  "start_url": "/",
+  "start_url": "/Menu",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "theme_color": "#ADA296",
+  "background_color": "#0F1A20",
   "icons": [
     {
-      "src": "./Assets/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "./Assets/Icon64.ico",
+      "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
