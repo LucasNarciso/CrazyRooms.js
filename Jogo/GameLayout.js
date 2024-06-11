@@ -13,13 +13,25 @@ function limparTerminal(){
 }
 
 
-function escreverNoTerminal(origem, texto, opcoes){
+function escreverNoTerminal(origem, texto, opcoes, tipoOpt){
     let terminal = document.querySelector('.ConteudoTerminal')
     if(origem == 'jogo'){
         let idTexto = Math.random();
         let idOpts = Math.random();
         if(opcoes){
-            let opcoesHTML = opcoes.map((opcao,index)=>`${index+1}. ${opcao}`)
+            let opcoesHTML;
+            
+            console.log("opcoes: ")
+            console.log(opcoes)
+
+            if(tipoOpt){
+                opcoesHTML = opcoes.map((opcao,index)=>`${tipoOpt} ${opcao}`)
+            }else{
+                opcoesHTML = opcoes.map((opcao,index)=>`${index+1}. ${opcao}`)
+            }
+
+            console.log("opcoesHTML: ")
+            console.log(opcoesHTML)
 
             terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem escolha">
                 <p id="${idTexto}"></p>
@@ -64,6 +76,35 @@ async function escreveTexto(texto, idDestino){
         }
     }
 
+}
+
+function novaSala(){
+    limparTerminal();
+    let salaAtual = new sala();
+    let atributo = "simples"
+
+    escreverNoTerminal('jogo',`Essa é uma sala ${atributo}, e nela temos: ${salaAtual.eventosSala.length  + " " + salaAtual.eventosSala.map(e=>e.nome).join('\n')}`)
+    escreverNoTerminal('jogo',`O que deseja fazer agora?`, ['Abrir o baú', 'Próxima sala'])
+
+    document.querySelector("#botao").addEventListener('click', ()=>{
+        let mensagensJogador = Array.from(document.querySelectorAll(`[class="mensagem"]`)).filter(m=>m.innerText.search('>') != -1);
+
+        if(mensagensJogador.length > 0){
+            let ultimaRespostaJogador = Array.from(document.querySelectorAll(`[class="mensagem"]`)).filter(m=>m.innerText.search('>') != -1).at(-1).innerText.replace('> ','');
+            
+            switch (ultimaRespostaJogador) {
+                case "1":
+                    salaAtual.eventosSala[0].abrirBau();
+                    break;
+                case "2":
+                    novaSala();
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    })
 }
 
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))

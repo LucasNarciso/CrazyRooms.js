@@ -1,6 +1,6 @@
 {
   "short_name": "Crazy Rooms",
-  "name": "Um jogo  onde você explora salas geradas de forma aleatória.",
+  "name": "Um jogo onde você explora salas geradas de forma aleatória.",
   "start_url": "/CrazyRooms.js/Menu",
   "display": "standalone",
   "theme_color": "#ADA296",
