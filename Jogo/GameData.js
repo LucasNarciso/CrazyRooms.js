@@ -1,9 +1,3 @@
-const eventos = [
-    {nome:"Baú", qtdMax:2, chance:7},
-    // {nome:"NPC", qtdMax:1, chance:2, acao:npc_conversar()},
-    // {nome:"Inimigo", qtdMax:2, chance:4, acao: inimigo_batalhar()},
-]
-
 const recursos = {
     armamento: {
         valor: [30, 60],
@@ -29,7 +23,6 @@ const recursos = {
         valor:[10, 20],
         qtdMax: 10,
         itens:[
-            "Flechas Infinitas",
             "Flechas Venenosas",
         ]
     },
@@ -70,6 +63,7 @@ const recursos = {
         valor: [50, 120],
         qtdMax: 1,
         itens: [
+            "Flechas Infinitas",
             "Anel do Poder",
             "Anel da Invisibilidade",
             "Anel da Proteção",
@@ -148,6 +142,7 @@ const mensagens = {
         "Desde quando isso tudo de coisa cabe em um lugar tão apertado? Alô Newton?",
         "É isso pô, é o baú do papai noel! Não tem fim!",
         "E esse baú infinito ai?",
+        "",
     ],
     quaseCheio:[
 
@@ -159,3 +154,52 @@ const mensagens = {
         "99% de ar e 1% item, amo matemática..."
     ],
 }
+
+const cores = [
+    "Amarelo",
+    "Âmbar",
+    "Anil",
+    "Azul",
+    "Bege",
+    "Bordô",
+    "Branco",
+    "Bronze",
+    "Cáqui",
+    "Caramelo",
+    "Carmesim",
+    "Castanho",
+    "Cinza",
+    "Cobre",
+    "Coral",
+    "Creme",
+    "Dourado",
+    "Grená",
+    "Índigo",
+    "Jade",
+    "Jambo",
+    "Laranja",
+    "Lavanda",
+    "Lilás",
+    "Limão",
+    "Marfim",
+    "Marrom",
+    "Mostarda",
+    "Oliva",
+    "Ouro",
+    "Pêssego",
+    "Pérola",
+    "Prata",
+    "Preto",
+    "Púrpura",
+    "Rosa",
+    "Roxo",
+    "Rubro",
+    "Salmão",
+    "Sépia",
+    "Terracota",
+    "Turquesa",
+    "Verde",
+    "Vermelho",
+    "Vinho",
+    "Violeta"
+];

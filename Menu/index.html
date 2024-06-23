@@ -10,6 +10,7 @@
     <link rel="manifest" href="../manifest.json" />
 
     <script src="../GlobalScript.js"></script>
+    <script src="./Script.js"></script>
 </head>
 <body>
     <div class="conteiner">
@@ -25,7 +26,7 @@
                 
         </div>
         <div id="botoes">
-            <button onclick="goOn('ir', 'jogo')">Continuar</button>
+            <button id="btnContinuar" onclick="goOn('ir', 'jogo')" disabled>Continuar</button>
             <button onclick="goOn('ir', 'personagens')">Personagens</button>
             <button onclick="goOn('ir', 'opcoes')">Opções</button>
             <button onclick="goOn('ir', 'sobre')">Sobre</button>

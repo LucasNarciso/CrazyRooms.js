@@ -17,5 +17,10 @@ function pesoPonderado(valorMin, valorMax) {
 function escolherValor(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-// let bauUm = new bau()
-// console.log(bauUm)
+
+function iniciarJogo(){
+
+    abrirSala(new sala());
+}
+
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))

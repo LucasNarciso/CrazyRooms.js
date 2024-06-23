@@ -1,5 +1,3 @@
-
-
 function enviar(){
     let campo = document.querySelector('#campo')
     if(campo.value != ""){
@@ -13,34 +11,28 @@ function limparTerminal(){
 }
 
 
-function escreverNoTerminal(origem, texto, opcoes, tipoOpt){
+function escreverNoTerminal(origem, texto, lista, tipoOpt){
     let terminal = document.querySelector('.ConteudoTerminal')
     if(origem == 'jogo'){
         let idTexto = Math.random();
         let idOpts = Math.random();
-        if(opcoes){
-            let opcoesHTML;
-            
-            console.log("opcoes: ")
-            console.log(opcoes)
+        if(lista){
+            let listaHTML;
 
             if(tipoOpt){
-                opcoesHTML = opcoes.map((opcao,index)=>`${tipoOpt} ${opcao}`)
+                listaHTML = lista.map((opcao,index)=>`${tipoOpt} ${opcao}`)
             }else{
-                opcoesHTML = opcoes.map((opcao,index)=>`${index+1}. ${opcao}`)
+                listaHTML = lista.map((opcao,index)=>`${index+1}. ${opcao}`)
             }
 
-            console.log("opcoesHTML: ")
-            console.log(opcoesHTML)
-
-            terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem escolha">
+            terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem lista">
                 <p id="${idTexto}"></p>
-                <div class="opcoes" id="${idOpts}">
+                <div class="itensLista" id="${idOpts}">
                     
                 </div>
             </div>`)
             escreveTexto(texto, idTexto)
-            escreveTexto(opcoesHTML, idOpts)
+            escreveTexto(listaHTML, idOpts)
         }else{
             terminal.insertAdjacentHTML('beforeEnd',`<div class="mensagem">
                 <p id="${idTexto}"></p>
@@ -54,7 +46,8 @@ function escreverNoTerminal(origem, texto, opcoes, tipoOpt){
     }
 }
 
-async function escreveTexto(texto, idDestino){
+//INATIVA
+async function escreveTexto2(texto, idDestino){
 
     let textoSplit = []
     if(texto.split){
@@ -78,33 +71,48 @@ async function escreveTexto(texto, idDestino){
 
 }
 
-function novaSala(){
-    limparTerminal();
-    let salaAtual = new sala();
-    let atributo = "simples"
+async function escreveTexto(texto, idDestino){
 
-    escreverNoTerminal('jogo',`Essa é uma sala ${atributo}, e nela temos: ${salaAtual.eventosSala.length  + " " + salaAtual.eventosSala.map(e=>e.nome).join('\n')}`)
-    escreverNoTerminal('jogo',`O que deseja fazer agora?`, ['Abrir o baú', 'Próxima sala'])
-
-    document.querySelector("#botao").addEventListener('click', ()=>{
-        let mensagensJogador = Array.from(document.querySelectorAll(`[class="mensagem"]`)).filter(m=>m.innerText.search('>') != -1);
-
-        if(mensagensJogador.length > 0){
-            let ultimaRespostaJogador = Array.from(document.querySelectorAll(`[class="mensagem"]`)).filter(m=>m.innerText.search('>') != -1).at(-1).innerText.replace('> ','');
-            
-            switch (ultimaRespostaJogador) {
-                case "1":
-                    salaAtual.eventosSala[0].abrirBau();
-                    break;
-                case "2":
-                    novaSala();
-                    break;
-            
-                default:
-                    break;
-            }
+    
+    if(texto.split){
+        document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto">${texto}</p>`)
+    }else{
+        for (let i = 0; i < texto.length; i++) {
+            texto[i].split(".")[0] / 1 ?
+            document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto option">${texto[i]}</p>`)
+            :
+            document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto">${texto[i]}</p>`)
         }
-    })
+    }
 }
 
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+function abrirSala(salaAnterior){
+    limparTerminal();
+    let dadosJogador = JSON.parse(localStorage.getItem('PlayerCCData'));
+    let salaAtual = salaAnterior ? salaAnterior : new sala();
+    let atributo = "simples"
+    let acoes = [{nome: "Próxima sala", funcao: ()=>{abrirSala()}, evento:null}]
+    let numero = salaAnterior ? dadosJogador.personagens.find(p=>p.id == dadosJogador.ultimoPersonagem).salaAtual : dadosJogador.personagens.find(p=>p.id == dadosJogador.ultimoPersonagem).salaAtual+1;
+
+    dadosJogador.personagens.find(p=>p.id == dadosJogador.ultimoPersonagem).salaAtual = numero;
+
+    localStorage.setItem('PlayerCCData', JSON.stringify(dadosJogador))
+
+    escreverNoTerminal('jogo',`Essa é a sala ${numero}, do tipo ${atributo}, e nela temos: `, salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"], "-")
+
+    let todasAcoes = acoes.concat(salaAtual.acoes)
+
+    escreverNoTerminal('jogo',`O que deseja fazer agora?`, todasAcoes.map(ac=>ac.nome))
+    defineOpcoes(todasAcoes, salaAtual);
+}
+
+function defineOpcoes(acoes, sala){
+    acoes.forEach(acao => {
+        let opcao = Array.from(document.querySelectorAll(`[class*="option"]`)).find(opt => opt.innerText.includes(acao.nome))
+        if(acao.evento != null){
+            opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](sala)})
+        }else{
+            opcao.addEventListener('click', ()=>{acao.funcao(sala)})
+        }
+    });
+}

@@ -36,17 +36,17 @@
             let terminal = document.querySelector('.ConteudoTerminal')
             let campo = document.querySelector('#campo')
 
-            campo.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("botao").click();
-            }
-            });
+            // campo.addEventListener("keypress", function(event) {
+            //     if (event.key === "Enter") {
+            //         event.preventDefault();
+            //         document.getElementById("botao").click();
+            //     }
+            // });
             setTimeout(() => {
                 // escreverNoTerminal('jogo', 'Olá jogador! Bem vindo ao Crazy Rooms!');
                 // escreverNoTerminal('jogo', 'Gostaria de informar o seu nome? Ou podemos escolher pra você?', ["Informar meu nome", "Deixar que escolham"]);
-                novaSala();
-            }, 1000);
+                iniciarJogo();
+            }, 500);
         }
     </script>
 </head>
@@ -55,10 +55,10 @@
         <span id="info1"></span>
         <div class="ConteudoTerminal">
         </div>
-        <div class="BarraTerminal">
+        <!-- <div class="BarraTerminal">
             <input id="campo" type="text">
             <button id="botao" onclick="enviar()">ENVIAR</button>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>

@@ -1,23 +1,46 @@
 class sala {
-    eventosSala = []
-    ambiente = {}
+    eventosSala = [];
+    acoes = [];
+    ambiente = {};
 
     constructor(){
-        this.eventosSala = sala_definirEventos();
-        this.ambiente = sala_definirAmbiente();
+        this.id = Math.random();
+        this.eventosSala = this.definirEventos();
+        this.ambiente = this.definirAmbiente();
+    }
+
+    definirAmbiente(){
+    
+    }
+    
+    definirEventos(){
+        let eventosEscolhidos = []
+        eventos.forEach((evento, index)=>{
+            for (let i = 0; i < evento.qtdMax; i++) {
+                if(escolherValor(0, 100) < evento.chance){
+                    eventosEscolhidos.push(new evento.classe)
+                    for (let j = 0; j < evento.acoes.length; j++) {
+                        this.acoes.push({nome:`Abrir ${eventosEscolhidos.at(-1).nome}`,funcao:evento.acoes[j], evento:eventosEscolhidos.at(-1)})
+                    }
+                }
+            }
+        })
+
+        return eventosEscolhidos;
     }
 }
 
 class bau {
-    nome = "Baú";
-    qtdMax = escolherValor(1, 2);
-    chance = 7;
-    tipo = "";
+    // tipo = "";
     aberto = false;
 
-    // constructor(){}
+    constructor(){
+        this.id = Math.random();
+        this.nome = "Baú " + cores[escolherValor(0, cores.length-1)];
+    }
 
-    abrirBau(){
+    abrirBau(sala){
+
         if(!this.aberto){
             this.qtdItens = escolherValor(0, 4);
             this.itens = this.gerarItens();
@@ -25,30 +48,33 @@ class bau {
             if(this.qtdItens == 0){
                 limparTerminal()
                 escreverNoTerminal('jogo', mensagens.azar[escolherValor(0, mensagens.azar.length-1)])
-                escreverNoTerminal('jogo', mensagens.vazio[escolherValor(0, mensagens.vazio.length)])
-
-                escreverNoTerminal('jogo',`O que deseja fazer agora?`, ['Abrir o iventário', 'Próxima sala'])
+                escreverNoTerminal('jogo', mensagens.vazio[escolherValor(0, mensagens.vazio.length-1)])
             }else if(this.qtdItens == 1){
                 limparTerminal()
+
+                let itemFormatado = (this.itens[0].qtd == 1 ? (this.itens[0].nome) : (this.itens[0].nome + ` (${this.itens[0].qtd})`))
+
                 escreverNoTerminal('jogo', mensagens.felicitacoes[escolherValor(0, mensagens.felicitacoes.length-1)])
-                escreverNoTerminal('jogo', mensagens.umItem[escolherValor(0, mensagens.umItem.length)], [this.itens[0].nome + ` (${this.itens[0].qtd})`], '-')
-
-                // escreverNoTerminal('jogo', `- `+this.itens[0].nome + ` (${this.itens[0].qtd})`)
-
-                escreverNoTerminal('jogo',`O que deseja fazer agora?`, ['Abrir o iventário', 'Próxima sala'])
+                escreverNoTerminal('jogo', mensagens.umItem[escolherValor(0, mensagens.umItem.length-1)], [itemFormatado], '-')
             }else{
                 limparTerminal()
-                let itensFormat = this.itens.map(i=>i.nome + ` (${i.qtd})`)
-                escreverNoTerminal('jogo', mensagens.felicitacoes[escolherValor(0, mensagens.felicitacoes.length-1)])
-                escreverNoTerminal('jogo', mensagens.cheio[escolherValor(0, mensagens.cheio.length)], itensFormat, '-')
-                // escreverNoTerminal('jogo', 'Bau aberto! Veja os itens:', itensFormat, '-')
 
-                escreverNoTerminal('jogo',`O que deseja fazer agora?`, ['Abrir o iventário', 'Próxima sala'])
+                let itensFormatados = this.itens.map((i)=>{ return i.qtd == 1 ? i.nome : i.nome + ` (${i.qtd})` })
+
+                escreverNoTerminal('jogo', mensagens.felicitacoes[escolherValor(0, mensagens.felicitacoes.length-1)])
+                escreverNoTerminal('jogo', mensagens.cheio[escolherValor(0, mensagens.cheio.length-1)], itensFormatados, '-')
             }
-            
+
+            this.limparSala(sala);
+            let acaoNome = this.qtdItens > 1 ? 'Coletar itens' : this.qtdItens == 0 ? 'Voltar' : 'Coletar Item'
+            escreverNoTerminal('jogo',`O que deseja fazer agora?`, [acaoNome])
+            defineOpcoes([{nome:acaoNome, funcao:()=>{abrirSala(sala)}, evento:null}], sala);
             this.aberto = true;
+
         }else{
-            console.log("Esse baú ja foi aberto!")
+            this.limparSala(sala);
+            escreverNoTerminal('jogo',`Esse baú ja foi aberto!`, ["Voltar"])
+            defineOpcoes([{nome:"Voltar", funcao:()=>{abrirSala(sala)}, evento:null}], sala);
         }
     }
 
@@ -62,27 +88,28 @@ class bau {
         }
         return itensGerados;
     }
+
+    limparSala(sala){
+        sala.eventosSala.splice(sala.eventosSala.indexOf(this), 1); //LIMPA O EVENTO ATUAL DA SALA
+        sala.acoes.splice(sala.acoes.indexOf(sala.acoes.find(a=>a.evento.id == this.id)), 1) //LIMPA A AÇÃO DO EVENTO ATUAL DA SALA
+    }
 }
 
 class item {
 
     constructor(nome, valor, tipo, qtd){
-        console.log("Valor Item: ", tipo)
+        let qtdItem = escolherValor(1, qtd);
         this.valor = pesoPonderado(valor[0], valor[1]);
         this.nome = nome;
         this.tipo = tipo;
-        this.qtd = escolherValor(1, qtd);
+        this.qtd = qtdItem;
+        this.id = Math.random();
     }
 
 }
 
-function sala_definirAmbiente(){
-    
-}
-
-function sala_definirEventos(){
-    let eventoEscolhido = eventos[escolherValor(0, eventos.length-1)];
-    if(eventoEscolhido.nome == "Baú"){
-        return [new bau()];
-    }
-}
+const eventos = [
+    {"Nome":"Báu", "classe":bau, "qtdMax":2, "chance":30, "acoes":["abrirBau"]}
+    // {nome:"NPC", qtdMax:1, chance:2, acao:npc_conversar()},
+    // {nome:"Inimigo", qtdMax:2, chance:4, acao: inimigo_batalhar()},
+]
