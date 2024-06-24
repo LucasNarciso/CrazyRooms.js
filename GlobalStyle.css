@@ -165,8 +165,11 @@ body{
 
 .botaoPadrao{
     width: 100px;
-    height: auto;
-    padding: 5px 0px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    justify-content: center;
     background-color: #ADA296;
     border: none;
     color: #0F1A20;

@@ -52,6 +52,7 @@ function novoPersonagem(espacoBranco){
             localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
             fecharPopUp(popUp);
             renderizaPersonagens();
+            mostrarToast("Personagem criado!")
         }else if(nome && nomeIgual){
             mostrarToast('Esse nome já está sendo usado!')
         }else{
@@ -86,9 +87,10 @@ function escolherPersonagem(personagem){
         //Insere um "PopUp Interno" para validar a exclusão do personagem
         conteudoPopUp.insertAdjacentHTML('beforeEnd',`
             <div id="ConfirmaDelete" class="DivConteudoPopUp" style="position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; box-shadow: none;">
-                <p>Quer mesmo excluir o personagem?</p>
+                <p>Digite "Delete" para excluir o personagem:</p>
                 </br>
                 <div id="botoesPopUpAdd">
+                    <input id="campoCONFIRMA" style="height: 30px" class="campoPadrao"></input>
                     <button id="btnCancelarCONFIRMA" class="botaoPadrao">Cancelar</button>
                     <button id="btnExcluirCONFIRMA" class="botaoPadrao">Excluir</button>
                 </div>
@@ -99,34 +101,55 @@ function escolherPersonagem(personagem){
             document.getElementById('ConfirmaDelete').remove()
         })
 
-        document.getElementById('btnExcluirCONFIRMA').addEventListener('mousedown', function(event){
+        // document.getElementById('btnExcluirCONFIRMA').addEventListener('mousedown', function(event){
 
-            if (event.buttons == 1){
-                intervaloTextoBotao = setInterval(()=>{
-                    let segundos = this.innerHTML.split(" ")[2]
-                    this.innerHTML = "Excluindo em " + (parseInt(segundos.split("")[0])-1) + "s"
-                }, 1000);
+        //     if (event.buttons == 1){
+        //         intervaloTextoBotao = setInterval(()=>{
+        //             let segundos = this.innerHTML.split(" ")[2]
+        //             this.innerHTML = "Excluindo em " + (parseInt(segundos.split("")[0])-1) + "s"
+        //         }, 1000);
     
-                this.innerHTML = "Excluindo em 3s"
-                this.style.width = "120px";
+        //         this.innerHTML = "Excluindo em 3s"
+        //         this.style.width = "120px";
     
-                tempoBtnExcluir = setTimeout(() => {
-                    let dadosPlayer = JSON.parse(localStorage.getItem('PlayerCCData'));
+        //         tempoBtnExcluir = setTimeout(() => {
+        //             let dadosPlayer = JSON.parse(localStorage.getItem('PlayerCCData'));
     
-                    dadosPlayer.personagens.splice(
-                        dadosPlayer.personagens.indexOf(dadosPlayer.personagens.find(p=>p.id == personagem.value)), 1
-                    )
+        //             dadosPlayer.personagens.splice(
+        //                 dadosPlayer.personagens.indexOf(dadosPlayer.personagens.find(p=>p.id == personagem.value)), 1
+        //             )
             
-                    localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
-                    fecharPopUp(popUp);
-                    renderizaPersonagens();
-                }, 3000);
+        //             localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
+        //             fecharPopUp(popUp);
+        //             renderizaPersonagens();
+        //         }, 3000);
+        //     }else{
+        //         clearTimeout(tempoBtnExcluir);
+        //         clearTimeout(intervaloTextoBotao);
+        //     }
+
+        // });
+
+        document.getElementById('btnExcluirCONFIRMA').addEventListener('mousedown', function(){
+
+            let campo = document.getElementById(`campoCONFIRMA`);
+            if(campo.value == "Delete"){
+                let dadosPlayer = JSON.parse(localStorage.getItem('PlayerCCData'));
+    
+                dadosPlayer.personagens.splice(
+                    dadosPlayer.personagens.indexOf(dadosPlayer.personagens.find(p=>p.id == personagem.value)), 1
+                )
+        
+                localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
+                fecharPopUp(popUp);
+                renderizaPersonagens();
+                mostrarToast("Personagem Excluido!")
             }else{
-                clearTimeout(tempoBtnExcluir);
-                clearTimeout(intervaloTextoBotao);
+                mostrarToast("Digite a palavra certa!")
             }
 
         });
+
     
         document.getElementById('btnExcluirCONFIRMA').addEventListener('mouseup', function(){
             clearTimeout(tempoBtnExcluir);

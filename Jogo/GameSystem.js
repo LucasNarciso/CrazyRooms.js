@@ -19,7 +19,8 @@ function escolherValor(min, max){
 }
 
 function iniciarJogo(){
-
+    let playerData = JSON.parse(localStorage.getItem("PlayerCCData"))
+    document.getElementById('NomePersonagem'). innerHTML = playerData.personagens.find(p=>p.id == playerData.ultimoPersonagem).nome
     abrirSala(new sala());
 }
 

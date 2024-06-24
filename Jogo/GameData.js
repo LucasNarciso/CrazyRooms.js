@@ -57,6 +57,7 @@ const recursos = {
             "Botas da Leveza",
             "Botas da Velocidade",
             "Botas da Agilidade",
+            "Botas Pesadas",
         ],
     },
     artefato: {
