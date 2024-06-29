@@ -30,6 +30,17 @@ class sala {
     }
 }
 
+class player {
+    constructor(){
+        this.id = JSON.parse(localStorage.getItem('PlayerCCData')).id;
+        this.mochila = JSON.parse(localStorage.getItem('PlayerCCData')).mochila;
+    }
+
+    abrirMochila(){
+
+    }
+}
+
 class bau {
     // tipo = "";
     aberto = false;
