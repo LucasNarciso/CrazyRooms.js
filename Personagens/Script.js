@@ -46,8 +46,8 @@ function novoPersonagem(espacoBranco){
             dadosPlayer.personagens.push({
                 "id": parseInt(espacoBranco.value),
                 "nome": `${nome}`,
-                "inventario": [],
-                "salaAtual": 1
+                "mochila": [],
+                "ultimaSala": null
             })
             localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
             fecharPopUp(popUp);

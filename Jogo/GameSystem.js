@@ -19,9 +19,14 @@ function escolherValor(min, max){
 }
 
 function iniciarJogo(){
-    let playerData = JSON.parse(localStorage.getItem("PlayerCCData"))
-    document.getElementById('NomePersonagem'). innerHTML = playerData.personagens.find(p=>p.id == playerData.ultimoPersonagem).nome
-    abrirSala(new sala());
+    let dadosSalvos = JSON.parse(localStorage.getItem("PlayerCCData"))
+    let dadosUltimoJogador = dadosSalvos.personagens.find(p=>p.id == dadosSalvos.ultimoPersonagem)
+    let jogadorAtual = new jogador(dadosUltimoJogador);
+
+    jogadorAtual.ultimaSala = dadosUltimoJogador.ultimaSala ? dadosUltimoJogador.ultimaSala : new sala();
+
+    document.getElementById('NomePersonagem').innerHTML = dadosUltimoJogador.nome
+    abrirSala(jogadorAtual)
 }
 
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
