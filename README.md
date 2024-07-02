@@ -31,3 +31,7 @@ Pronto! Dessa forma um ícone do jogo irá aparecer nos seus aplicativos
 ## Desenvolvimento
 
 Esse jogo ainda está sendo desenvolvido aos poucos, mas ja pode ser jogado através do link na descrição do Repositório.
+
+## Status
+
+Atualmente temos apenas a mecânica de Geração de Baús aleatórios, e a criação de personagens.
