@@ -93,9 +93,9 @@
 
 .texto{
     overflow: hidden; /* Ensures the content is not revealed until the animation */
-    white-space: nowrap; /* Keeps the content on a single line */
+    /* white-space: nowrap; Keeps the content on a single line */
     letter-spacing: .15em; /* Adjust as needed */
-    animation: typing 0.5s linear forwards;
+    /* animation: typing 0.5s linear forwards; */
 }
 .option{
     padding: 3px 0px;

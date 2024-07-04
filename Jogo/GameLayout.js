@@ -36,13 +36,13 @@ function escreverNoTerminal(origem, texto, lista, tipoOpt){
                     
                 </div>
             </div>`)
-            escreveTexto(texto, idTexto)
-            escreveTexto(listaHTML, idOpts)
+            escreveTexto3(texto, idTexto)
+            escreveTexto3(listaHTML, idOpts)
         }else{
             document.querySelector('.ConteudoTerminal').insertAdjacentHTML('afterBegin',`<div class="mensagem">
                 <p id="${idTexto}"></p>
             </div>`)
-            escreveTexto(texto, idTexto)
+            escreveTexto3(texto, idTexto)
         }
     }else if(origem == 'jogador'){
         terminal.insertAdjacentHTML('afterBegin',`<div class="mensagem">
@@ -91,7 +91,39 @@ async function escreveTexto(texto, idDestino){
     }
 }
 
-function abrirSala(jogador, nova){
+async function escreveTexto3(texto, idDestino){
+    let destino = document.getElementById(idDestino)
+    let delay = 10;
+    if(!Array.isArray(texto)){
+        let textoDividido = texto.split("");
+
+        destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
+        for (let i = 0; i < textoDividido.length; i++) {
+            destino.querySelector('p').innerHTML += textoDividido[i];
+            await sleep(delay)
+        }
+    }else{
+        for (let i = 0; i < texto.length; i++) {
+            if(texto[i].split(".")[0] / 1){
+                destino.insertAdjacentHTML('beforeEnd',`<p class="texto option"></p>`)
+                let textoDividido = texto[i].split("");
+                for (let j = 0; j < textoDividido.length; j++) {
+                    Array.from(destino.querySelectorAll('p')).at(-1).innerHTML += textoDividido[j];
+                    await sleep(delay)
+                }
+            }else{
+                destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
+                let textoDividido = texto[i].split("");
+                for (let j = 0; j < textoDividido.length; j++) {
+                    Array.from(destino.querySelectorAll('p')).at(-1).innerHTML += textoDividido[j];
+                    await sleep(delay)
+                }
+            }
+        }
+    }
+}
+
+async function abrirSala(jogador, nova){
     limparTerminal();
 
     let salaAtual = nova ? new sala() : new sala(jogador.ultimaSala);
@@ -102,10 +134,13 @@ function abrirSala(jogador, nova){
     //Define o número atual da sala
     salaAtual.numero = nova ? jogador.ultimaSala.numero+1 : jogador.ultimaSala.numero;
 
+    salaAtual.acoes.push({nome:"Abrir mochila", funcao:()=>{abrirMochila(jogador)}, evento:null})
+    
     //Adiciona ação de próxima sala
     salaAtual.acoes.find(a=>a.nome == "Próxima sala") ?
     (salaAtual.acoes.find(a=>a.nome == "Próxima sala").funcao = ()=>{abrirSala(jogador, true)}) :
     salaAtual.acoes.push({nome:"Próxima sala", funcao:()=>{abrirSala(jogador, true)}, evento:null})
+
     
     //Escreve no terminal
     escreverNoTerminal('jogo',`Essa é a sala ${salaAtual.numero}, do tipo ${atributo}, e nela temos: `, salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"], "-")
@@ -120,22 +155,46 @@ function abrirSala(jogador, nova){
     localStorage.setItem('PlayerCCData', JSON.stringify(save))
 }
 
-function defineOpcoes(evento, jogador){
-    evento.acoes.forEach(acao => {
-        let opcao = Array.from(document.querySelectorAll(`[class*="option"]`)).find(opt => opt.innerText.includes(acao.nome))
+function abrirMochila(jogador){
+    limparTerminal();
 
-        if(acao.parametro){
-            if(acao.evento != null){
-                opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](acao.parametro)})
-            }else if(acao.parametro){
-                opcao.addEventListener('click', ()=>{acao.funcao(acao.parametro)})
-            }
-        }else{
-            if(acao.evento != null){
-                opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](jogador)})
+    let atributo = "simples";
+    let save;
+    let acoes = [{nome:"Voltar", funcao:abrirSala, evento:null}];
+    
+    //Escreve no terminal
+    escreverNoTerminal('jogo',`Esse são seus itens:`, jogador.mochila.map(i=>i.nome+" ("+i.qtd+")"), "-")
+    escreverNoTerminal('jogo',`O que deseja fazer agora?`, acoes.map(a=>a.nome))
+    defineOpcoes({acoes: acoes}, jogador);
+    
+    //Salva o jogador atual
+    save = JSON.parse(localStorage.getItem('PlayerCCData'))
+    save.personagens.filter(p=>p.id == jogador.id).map(p=>p.mochila = jogador.mochila)
+    localStorage.setItem('PlayerCCData', JSON.stringify(save))
+}
+
+function defineOpcoes(evento, jogador){
+    try {
+        evento.acoes.forEach(acao => {
+            let opcao = Array.from(document.querySelectorAll(`[class*="option"]`)).find(opt => opt.innerText.includes(acao.nome))
+    
+            if(acao.parametro){
+                if(acao.evento != null){
+                    opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](acao.parametro)})
+                }else if(acao.parametro){
+                    opcao.addEventListener('click', ()=>{acao.funcao(acao.parametro)})
+                }
             }else{
-                opcao.addEventListener('click', ()=>{acao.funcao(jogador)})
+                if(acao.evento != null){
+                    opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](jogador)})
+                }else{
+                    opcao.addEventListener('click', ()=>{acao.funcao(jogador)})
+                }
             }
-        }
-    });
+        });
+    } catch (error) {
+        setTimeout(() => {
+            defineOpcoes(evento, jogador)
+        }, 100);
+    }
 }

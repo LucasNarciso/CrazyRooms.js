@@ -126,11 +126,31 @@ class bau {
         }
         
         if(this.itens.length > 0 && this.qtdItens == 1){
-            itensFormatados = [(this.itens[0].qtd == 1 ? (this.itens[0].nome) : (this.itens[0].nome + ` (${this.itens[0].qtd})`))]
+            // itensFormatados = [this.itens[0].nome]
+            for (let i = 0; i < 4; i++) {
+                let item;
+                if(this.itens[i]){
+                    item = this.itens[i] ? (this.itens[i].qtd == 1 ? this.itens[i].nome : (this.itens[i].nome + ` (${this.itens[i].qtd})`)) : ""
+                }else{
+                    item = ""
+                }
+                itensFormatados.push(item)
+            }
             acoes.push( {nome:"Coletar item", funcao:"pegarItens", evento:jogador, parametro:this.itens} )
         }else if(this.itens.length > 0){
-            itensFormatados = this.itens.map((i)=>{ return i.qtd == 1 ? i.nome : i.nome + ` (${i.qtd})` })
+            // itensFormatados = this.itens.map((i)=>{ return i.qtd == 1 ? i.nome : i.nome + ` (${i.qtd})` })
+            for (let i = 0; i < 4; i++) {
+                let item;
+                if(this.itens[i]){
+                    item = this.itens[i] ? (this.itens[i].qtd == 1 ? this.itens[i].nome : (this.itens[i].nome + ` (${this.itens[i].qtd})`)) : ""
+                }else{
+                    item = ""
+                }
+                itensFormatados.push(item)
+            }
             acoes.push( {nome:"Coletar tudo", funcao:"pegarItens", evento:jogador, parametro:this.itens} )
+        }else{
+            itensFormatados = ["","","",""]
         }
 
         limparTerminal()
