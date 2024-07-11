@@ -3,7 +3,7 @@ var SALA = null;
 function enviar(){
     let campo = document.querySelector('#campo')
     if(campo.value != ""){
-        escreverNoTerminal('jogador', campo.value)
+        // escreverNoTerminal('jogador', campo.value)
     }
     campo.value = "";
 }
@@ -14,41 +14,37 @@ function limparTerminal(){
 }
 
 
-function escreverNoTerminal(origem, texto, lista, tipoOpt){
-    let destino;
-    if(origem == 'jogo'){
-        let idTexto = Math.random();
-        let idOpts = Math.random();
-        if(lista){
-            let listaHTML;
+function escreverNoTerminal(destino, texto, lista, tipoOpt){
 
-            if(tipoOpt){
-                listaHTML = lista.map((opcao,index)=>`${tipoOpt} ${opcao}`)
-                destino = document.querySelector('.ConteudoTerminal')
-            }else{
-                listaHTML = lista.map((opcao,index)=>`${index+1}. ${opcao}`)
-                destino = document.querySelector('.Opcoes');
-            }
+    let idTexto = Math.random();
+    let idOpts = Math.random();
 
-            destino.insertAdjacentHTML('afterBegin',`<div class="mensagem lista">
-                <p id="${idTexto}"></p>
-                <div class="itensLista" id="${idOpts}">
-                    
-                </div>
-            </div>`)
-            escreveTexto3(texto, idTexto)
-            escreveTexto3(listaHTML, idOpts)
+    if(lista){
+        let listaHTML;
+
+        if(tipoOpt){
+            listaHTML = lista.map((opcao,index)=>`${tipoOpt} ${opcao}`);
+            !destino && (destino = document.querySelector('.ConteudoTerminal'));
         }else{
-            document.querySelector('.ConteudoTerminal').insertAdjacentHTML('afterBegin',`<div class="mensagem">
-                <p id="${idTexto}"></p>
-            </div>`)
-            escreveTexto3(texto, idTexto)
+            listaHTML = lista.map((opcao,index)=>`${index+1}. ${opcao}`);
+            !destino && (destino = document.querySelector('.Opcoes'));
         }
-    }else if(origem == 'jogador'){
-        terminal.insertAdjacentHTML('afterBegin',`<div class="mensagem">
-            <p>> ${texto}</p>
+
+        destino.insertAdjacentHTML('afterBegin',`<div class="mensagem lista">
+            <p id="${idTexto}"></p>
+            <div class="itensLista" id="${idOpts}">
+                
+            </div>
         </div>`)
+        escreveTexto3(texto, idTexto)
+        escreveTexto3(listaHTML, idOpts)
+    }else{
+        document.querySelector('.ConteudoTerminal').insertAdjacentHTML('afterBegin',`<div class="mensagem">
+            <p id="${idTexto}"></p>
+        </div>`)
+        escreveTexto3(texto, idTexto)
     }
+    
 }
 
 //INATIVA
@@ -143,8 +139,8 @@ async function abrirSala(jogador, nova){
 
     
     //Escreve no terminal
-    escreverNoTerminal('jogo',`Essa é a sala ${salaAtual.numero}, do tipo ${atributo}, e nela temos: `, salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"], "-")
-    escreverNoTerminal('jogo',`O que deseja fazer agora?`, salaAtual.acoes.map(ac=>ac.nome))
+    escreverNoTerminal('',`Essa é a sala ${salaAtual.numero}, do tipo ${atributo}, e nela temos: `, salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"], "-")
+    escreverNoTerminal('',`O que deseja fazer agora?`, salaAtual.acoes.map(ac=>ac.nome))
     defineOpcoes(salaAtual, jogador);
     
     //Salva o jogador atual
@@ -160,11 +156,26 @@ function abrirMochila(jogador){
 
     let atributo = "simples";
     let save;
-    let acoes = [{nome:"Voltar", funcao:abrirSala, evento:null}];
+    let acoes = [{nome:"Voltar", funcao:()=>{document.getElementById('Mochila').remove(); abrirSala(jogador, false);}, evento:null}];
     
-    //Escreve no terminal
-    escreverNoTerminal('jogo',`Esse são seus itens:`, jogador.mochila.map(i=>i.nome+" ("+i.qtd+")"), "-")
-    escreverNoTerminal('jogo',`O que deseja fazer agora?`, acoes.map(a=>a.nome))
+    //Adiciona Layout da mochila
+    document.querySelector(".ConteudoTerminal").innerHTML = `
+        <div id="Mochila">
+            <div class="Mochila-Divisoria">
+                <div id="Mochila-Itens"></div>
+                <div id="Mochila-Equipados"></div>
+            </div>
+            <div class="Mochila-Divisoria">
+                <div id="Mochila-Detalhes"></div>
+                <div id="Mochila-Acoes"></div>
+            </div>
+        </div>
+        <div class="Opcoes"></div>
+    `
+
+    //Escreve no terminal "Esse são seus itens:"
+    escreverNoTerminal(document.getElementById('Mochila-Itens'),``, jogador.mochila.map(i=>i.nome+" ("+i.qtd+")"), "-")
+    escreverNoTerminal(document.getElementById('Mochila-Acoes'),`O que deseja fazer agora?`, acoes.map(a=>a.nome))
     defineOpcoes({acoes: acoes}, jogador);
     
     //Salva o jogador atual
@@ -178,7 +189,7 @@ function defineOpcoes(evento, jogador){
         evento.acoes.forEach(acao => {
             let opcao = Array.from(document.querySelectorAll(`[class*="option"]`)).find(opt => opt.innerText.includes(acao.nome))
     
-            if(acao.parametro){
+            if(acao.parametro && opcao){
                 if(acao.evento != null){
                     opcao.addEventListener('click', ()=>{acao.evento[acao.funcao](acao.parametro)})
                 }else if(acao.parametro){

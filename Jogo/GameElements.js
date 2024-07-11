@@ -71,19 +71,27 @@ class jogador {
     }
 
     pegarItens(itens){
-        let evento = this.ultimaSala.eventosSala.find(e=>e.itens.find(i=>i.id == itens[0].id))
-        let qtd = itens.length;
+        // try {
+        debugger
+            let evento = this.ultimaSala.eventosSala.find(e=>e.itens.find(i=>i.id == itens[0].id))
+            let qtd = 0;
+            if(itens.length == 0){
+                qtd = 1
+            }else{ qtd = itens.length}
 
-        for (let i = 0; i < qtd; i++) {
-            let item = itens.at(0)
-            this.mochila.push(item)
-            itens.splice(itens.map(i=>i.nome).indexOf(item.nome), 1)
-            evento.qtdItens--;
-        }
+            for (let i = 0; i < qtd; i++) {
+                let item = itens.at(0)
+                this.mochila.push(item)
+                itens.splice(itens.map(i=>i.nome).indexOf(item.nome), 1)
+                evento.qtdItens--;
+            }
 
-        evento.itens = itens;
+            evento.itens = itens;
 
-        abrirSala(this)
+            abrirSala(this, false)   
+        // } catch (error) {
+        //     alert(error)
+        // }
     }
 }
 
@@ -155,11 +163,11 @@ class bau {
 
         limparTerminal()
 
-        escreverNoTerminal('jogo', this.mensagemUm, itensFormatados, '-')
+        escreverNoTerminal('', this.mensagemUm, itensFormatados, '-')
 
         acoes.push( {nome:"Voltar", funcao:abrirSala, evento:null} );
 
-        escreverNoTerminal('jogo',`O que deseja fazer agora?`, acoes.map(a=>a.nome))
+        escreverNoTerminal('',`O que deseja fazer agora?`, acoes.map(a=>a.nome))
         defineOpcoes({acoes: acoes}, jogador);
     }
 

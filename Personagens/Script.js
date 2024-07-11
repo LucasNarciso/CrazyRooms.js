@@ -47,6 +47,12 @@ function novoPersonagem(espacoBranco){
                 "id": parseInt(espacoBranco.value),
                 "nome": `${nome}`,
                 "mochila": [],
+                "equipados": {
+                    "Arma":"",
+                    "Armadura":"",
+                    "Arremesso":"",
+                    "Artefato":""
+                },
                 "ultimaSala": null
             })
             localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
