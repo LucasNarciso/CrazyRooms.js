@@ -11,7 +11,7 @@
 @media (max-width: 1024px) {
     .conteiner{
         width: 100%;
-        height: 92vh;
+        height: 95vh;
     }
 }
 
@@ -167,6 +167,32 @@
     flex-direction: column;
     height: 100%;
     width: 50%;
+}
+@media (max-width: 480px) {
+    .Mochila-Divisoria{
+        min-width: 100%;
+        /* height: auto !important; */
+    }
+    .DivisoriaDois{
+        height: fit-content;
+    }
+    #Mochila-Itens{
+        max-height: 40%;
+    }
+    #Mochila-Equipados{
+        max-height: 30%;
+    }
+    #Mochila-Acoes{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+    #Mochila-Detalhes{
+        position: fixed;
+    }
+    #Mochila-Acoes{
+        max-height: 27%;
+    }
 }
 
 #Mochila-Itens{

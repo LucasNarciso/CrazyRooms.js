@@ -51,7 +51,8 @@ function novoPersonagem(espacoBranco){
                     "Arma":"",
                     "Armadura":"",
                     "Arremesso":"",
-                    "Artefato":""
+                    "Artefato 1":"",
+                    "Artefato 2":""
                 },
                 "ultimaSala": null
             })

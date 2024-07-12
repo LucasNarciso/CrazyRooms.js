@@ -63,6 +63,7 @@ class jogador {
         this.nome = jogador.nome;
         this.id = jogador.id;
         this.mochila = jogador.mochila;
+        this.equipados = jogador.equipados;
         this.ultimaSala = null;
     }
 

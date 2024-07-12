@@ -72,6 +72,7 @@ async function escreveTexto2(texto, idDestino){
 
 }
 
+//INATIVA
 async function escreveTexto(texto, idDestino){
 
     
@@ -89,16 +90,8 @@ async function escreveTexto(texto, idDestino){
 
 async function escreveTexto3(texto, idDestino){
     let destino = document.getElementById(idDestino)
-    let delay = 10;
-    if(!Array.isArray(texto)){
-        let textoDividido = texto.split("");
-
-        destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
-        for (let i = 0; i < textoDividido.length; i++) {
-            destino.querySelector('p').innerHTML += textoDividido[i];
-            await sleep(delay)
-        }
-    }else{
+    let delay = 1;
+    if(Array.isArray(texto)){
         for (let i = 0; i < texto.length; i++) {
             if(texto[i].split(".")[0] / 1){
                 destino.insertAdjacentHTML('beforeEnd',`<p class="texto option"></p>`)
@@ -115,6 +108,14 @@ async function escreveTexto3(texto, idDestino){
                     await sleep(delay)
                 }
             }
+        }
+    }else{
+        let textoDividido = texto.split("");
+    
+        destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
+        for (let i = 0; i < textoDividido.length; i++) {
+            destino.querySelector('p').innerHTML += textoDividido[i];
+            await sleep(delay)
         }
     }
 }
@@ -154,18 +155,17 @@ async function abrirSala(jogador, nova){
 function abrirMochila(jogador){
     limparTerminal();
 
-    let atributo = "simples";
     let save;
     let acoes = [{nome:"Voltar", funcao:()=>{document.getElementById('Mochila').remove(); abrirSala(jogador, false);}, evento:null}];
     
     //Adiciona Layout da mochila
     document.querySelector(".ConteudoTerminal").innerHTML = `
         <div id="Mochila">
-            <div class="Mochila-Divisoria">
+            <div class="Mochila-Divisoria DivisoriaUm">
                 <div id="Mochila-Itens"></div>
                 <div id="Mochila-Equipados"></div>
             </div>
-            <div class="Mochila-Divisoria">
+            <div class="Mochila-Divisoria DivisoriaDois">
                 <div id="Mochila-Detalhes"></div>
                 <div id="Mochila-Acoes"></div>
             </div>
@@ -174,7 +174,8 @@ function abrirMochila(jogador){
     `
 
     //Escreve no terminal "Esse são seus itens:"
-    escreverNoTerminal(document.getElementById('Mochila-Itens'),``, jogador.mochila.map(i=>i.nome+" ("+i.qtd+")"), "-")
+    escreverNoTerminal(document.getElementById('Mochila-Itens'),``, jogador.mochila.map(i=>i.qtd > 1 ? i.nome+" ("+i.qtd+")" : i.nome), "-")
+    escreverNoTerminal(document.getElementById('Mochila-Equipados'),``, Object.keys(jogador.equipados).map(esp=>esp+": "), "-")
     escreverNoTerminal(document.getElementById('Mochila-Acoes'),`O que deseja fazer agora?`, acoes.map(a=>a.nome))
     defineOpcoes({acoes: acoes}, jogador);
     
