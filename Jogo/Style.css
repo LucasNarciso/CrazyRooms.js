@@ -90,6 +90,16 @@
     gap: 8px;
 }
 
+.DetalheItem{
+    border: 1px solid #ADA296;
+    border-radius: 5px;
+    padding: 0px 10px;
+    background-color: transparent;
+    color: #ADA296;
+}
+.DetalheItem:hover{
+    transform: scale(1.1);
+}
 
 .texto{
     overflow: hidden; /* Ensures the content is not revealed until the animation */
@@ -97,10 +107,10 @@
     letter-spacing: .15em; /* Adjust as needed */
     /* animation: typing 0.5s linear forwards; */
 }
-.option{
+.Opcao{
     padding: 3px 0px;
 }
-.option:hover{
+.Opcao:hover{
     background-color: rgba(255, 255, 255, 0.1);
     cursor: pointer;
     border-radius: 3px;
@@ -140,17 +150,6 @@
     height: auto;
 }
 
-@media (max-width: 480px) {
-    .Opcoes{
-        display: flex;
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        border-top: 1px solid #ADA296;
-        padding: 10px;
-    }
-}
-
 
 
 /* MOCHILA */
@@ -162,37 +161,21 @@
     height: 100%;
     flex-wrap: wrap;
 }
+
+#Mochila-Info{
+   width: 100%;
+   height: 5%;
+
+   border-width: 1px;
+   border-bottom-width: 0px;;
+   border-color: #ADA296;
+   border-style: solid;
+}
 .Mochila-Divisoria{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 95%;
     width: 50%;
-}
-@media (max-width: 480px) {
-    .Mochila-Divisoria{
-        min-width: 100%;
-        /* height: auto !important; */
-    }
-    .DivisoriaDois{
-        height: fit-content;
-    }
-    #Mochila-Itens{
-        max-height: 40%;
-    }
-    #Mochila-Equipados{
-        max-height: 30%;
-    }
-    #Mochila-Acoes{
-        position: fixed;
-        bottom: 0;
-        left: 0;
-    }
-    #Mochila-Detalhes{
-        position: fixed;
-    }
-    #Mochila-Acoes{
-        max-height: 27%;
-    }
 }
 
 #Mochila-Itens{
@@ -225,4 +208,68 @@
     width: 100%;
     
     padding: 5px;
+}
+
+#Mochila .itensLista {
+    width: 100%;
+}
+
+.Mobile{
+    opacity: 0;
+}
+
+.Item{
+    padding: 3px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+.Item:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+@media (max-width: 480px) {
+    .Mobile{
+        opacity: 1 !important;
+    }
+    .Opcoes{
+        display: flex;
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        border-top: 1px solid #ADA296;
+        padding: 10px;
+    }
+    .Mochila-Divisoria{
+        min-width: 100%;
+    }
+    .DivisoriaDois{
+        height: fit-content;
+        border-bottom: 0px !important;
+    }
+    #Mochila-Itens{
+        max-height: 40%;
+    }
+    #Mochila-Equipados{
+        max-height: 28%;
+    }
+    #Mochila-Acoes{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        max-height: 27%;
+
+        border-top: 1px solid #ADA296 !important;
+        border-bottom: 0px !important;
+        border-left: 0px !important;
+        border-right: 0px !important;
+    }
+    #Mochila-Detalhes{
+        position: fixed;
+        top: 20%;
+        left: 0px;
+        border: transparent !important;
+        display: none !important;
+    }
 }

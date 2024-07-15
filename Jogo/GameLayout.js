@@ -1,48 +1,50 @@
 var SALA = null;
 
-function enviar(){
-    let campo = document.querySelector('#campo')
-    if(campo.value != ""){
-        // escreverNoTerminal('jogador', campo.value)
-    }
-    campo.value = "";
-}
-
 function limparTerminal(){
     // document.querySelector('.ConteudoTerminal').innerHTML = ""
     document.querySelectorAll('[class*="mensagem"]').forEach(a=>a.remove())
 }
 
-
-function escreverNoTerminal(destino, texto, lista, tipoOpt){
-
+function escreverNoTerminal(config){
+    // destino, texto, lista, tipoOpt
     let idTexto = Math.random();
     let idOpts = Math.random();
+    let elementoListaAdd = null;
+    let classe = "";
 
-    if(lista){
+    if(config.lista){
         let listaHTML;
 
-        if(tipoOpt){
-            listaHTML = lista.map((opcao,index)=>`${tipoOpt} ${opcao}`);
-            !destino && (destino = document.querySelector('.ConteudoTerminal'));
-        }else{
-            listaHTML = lista.map((opcao,index)=>`${index+1}. ${opcao}`);
-            !destino && (destino = document.querySelector('.Opcoes'));
+        if(config.tipoLista == "lista"){
+            listaHTML = config.lista.map((itemLista)=>`${config.tipoOpt} ${itemLista}`);
+            !config.destino && (config.destino = document.querySelector('.ConteudoTerminal'));
+
+        }else if(config.tipoLista == "opcoes"){
+            listaHTML = config.lista.map((opcao,index)=>`${index+1}. ${opcao}`);
+            !config.destino && (config.destino = document.querySelector('.Opcoes'));
+            classe = "Opcao";
+
+        }else if(config.tipoLista == "itens"){
+            listaHTML = config.lista.map((opcao)=>`${opcao}`);
+            !config.destino && (config.destino = document.querySelector('.Opcoes'));
+            elementoListaAdd = `<button class="Mobile DetalheItem">...</button>`
+            classe = "Item";
         }
 
-        destino.insertAdjacentHTML('afterBegin',`<div class="mensagem lista">
-            <p id="${idTexto}"></p>
+        config.destino.insertAdjacentHTML('afterBegin',`
+        <div class="mensagem lista">
+            ${config.texto ? `<p id="${idTexto}"></p>` : ``}
             <div class="itensLista" id="${idOpts}">
                 
             </div>
         </div>`)
-        escreveTexto3(texto, idTexto)
-        escreveTexto3(listaHTML, idOpts)
+        config.texto && escreveTexto3({texto: config.texto, idDestino: idTexto, classe: classe}, elementoListaAdd)
+        escreveTexto3({texto: listaHTML, idDestino: idOpts, classe: classe}, elementoListaAdd)
     }else{
         document.querySelector('.ConteudoTerminal').insertAdjacentHTML('afterBegin',`<div class="mensagem">
             <p id="${idTexto}"></p>
         </div>`)
-        escreveTexto3(texto, idTexto)
+        escreveTexto3({texto: config.texto, idDestino: idTexto, classe: classe}, elementoListaAdd)
     }
     
 }
@@ -81,36 +83,33 @@ async function escreveTexto(texto, idDestino){
     }else{
         for (let i = 0; i < texto.length; i++) {
             texto[i].split(".")[0] / 1 ?
-            document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto option">${texto[i]}</p>`)
+            document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto Opcao">${texto[i]}</p>`)
             :
             document.getElementById(idDestino).insertAdjacentHTML('beforeEnd',`<p class="texto">${texto[i]}</p>`)
         }
     }
 }
 
-async function escreveTexto3(texto, idDestino){
-    let destino = document.getElementById(idDestino)
+async function escreveTexto3(config, elementoListaAdd){
+    let destino = document.getElementById(config.idDestino)
     let delay = 1;
-    if(Array.isArray(texto)){
-        for (let i = 0; i < texto.length; i++) {
-            if(texto[i].split(".")[0] / 1){
-                destino.insertAdjacentHTML('beforeEnd',`<p class="texto option"></p>`)
-                let textoDividido = texto[i].split("");
-                for (let j = 0; j < textoDividido.length; j++) {
-                    Array.from(destino.querySelectorAll('p')).at(-1).innerHTML += textoDividido[j];
-                    await sleep(delay)
-                }
-            }else{
-                destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
-                let textoDividido = texto[i].split("");
-                for (let j = 0; j < textoDividido.length; j++) {
-                    Array.from(destino.querySelectorAll('p')).at(-1).innerHTML += textoDividido[j];
-                    await sleep(delay)
-                }
+
+    if(Array.isArray(config.texto)){
+        for (let i = 0; i < config.texto.length; i++) {
+
+            destino.insertAdjacentHTML('beforeEnd',`${
+                config.classe ? `<p class="texto ${config.classe}"></p>` : `<p class="texto"></p>`
+            }`)
+            
+            let textoDividido = config.texto[i].split("");
+            for (let j = 0; j < textoDividido.length; j++) {
+                Array.from(destino.querySelectorAll('p')).at(-1).innerHTML += textoDividido[j];
+                await sleep(delay)
             }
+            elementoListaAdd && Array.from(destino.querySelectorAll('p')).at(-1).insertAdjacentHTML('beforeEnd', elementoListaAdd);
         }
     }else{
-        let textoDividido = texto.split("");
+        let textoDividido = config.texto.split("");
     
         destino.insertAdjacentHTML('beforeEnd',`<p class="texto"></p>`)
         for (let i = 0; i < textoDividido.length; i++) {
@@ -140,8 +139,19 @@ async function abrirSala(jogador, nova){
 
     
     //Escreve no terminal
-    escreverNoTerminal('',`Essa é a sala ${salaAtual.numero}, do tipo ${atributo}, e nela temos: `, salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"], "-")
-    escreverNoTerminal('',`O que deseja fazer agora?`, salaAtual.acoes.map(ac=>ac.nome))
+    escreverNoTerminal({
+        destino:'',
+        texto: `Essa é a sala ${salaAtual.numero}, do tipo ${atributo}, e nela temos: `, 
+        lista: salaAtual.eventosSala.length > 0 ? salaAtual.eventosSala.map(e=>e.nome) : ["Nada"],
+        tipoOpt: "-",
+        tipoLista: "lista"
+    })
+    escreverNoTerminal({
+        destino:'',
+        texto: `O que deseja fazer agora?`, 
+        lista: salaAtual.acoes.map(ac=>ac.nome),
+        tipoLista: "opcoes"
+    })
     defineOpcoes(salaAtual, jogador);
     
     //Salva o jogador atual
@@ -156,11 +166,12 @@ function abrirMochila(jogador){
     limparTerminal();
 
     let save;
-    let acoes = [{nome:"Voltar", funcao:()=>{document.getElementById('Mochila').remove(); abrirSala(jogador, false);}, evento:null}];
+    let acoes = [{nome:"Voltar", funcao:()=>{document.getElementById('Mochila').remove(); document.querySelector('.Opcoes').style.display = "flex"; abrirSala(jogador, false);}, evento:null}];
     
     //Adiciona Layout da mochila
     document.querySelector(".ConteudoTerminal").innerHTML = `
         <div id="Mochila">
+        <div id="Mochila-Info"></div>
             <div class="Mochila-Divisoria DivisoriaUm">
                 <div id="Mochila-Itens"></div>
                 <div id="Mochila-Equipados"></div>
@@ -172,13 +183,31 @@ function abrirMochila(jogador){
         </div>
         <div class="Opcoes"></div>
     `
+    document.querySelector('.Opcoes').style.display = "none"; ;//Ocultando div padrão de opções
 
     //Escreve no terminal "Esse são seus itens:"
-    escreverNoTerminal(document.getElementById('Mochila-Itens'),``, jogador.mochila.map(i=>i.qtd > 1 ? i.nome+" ("+i.qtd+")" : i.nome), "-")
-    escreverNoTerminal(document.getElementById('Mochila-Equipados'),``, Object.keys(jogador.equipados).map(esp=>esp+": "), "-")
-    escreverNoTerminal(document.getElementById('Mochila-Acoes'),`O que deseja fazer agora?`, acoes.map(a=>a.nome))
+    escreverNoTerminal({
+        destino: document.getElementById('Mochila-Itens'),
+        texto: null, 
+        lista: jogador.mochila.map(i=>i.qtd > 1 ? i.nome+" ("+i.qtd+")" : i.nome),
+        tipoOpt: " ",
+        tipoLista: "itens"
+    })
+    escreverNoTerminal({
+        destino: document.getElementById('Mochila-Equipados'),
+        texto: null, 
+        lista: Object.keys(jogador.equipados).map(esp=>esp+": "),
+        tipoOpt: " ",
+        tipoLista: "lista"
+    })
+    escreverNoTerminal({
+        destino: document.getElementById('Mochila-Acoes'),
+        texto: `O que deseja fazer agora?`, 
+        lista: acoes.map(a=>a.nome),
+        tipoLista: "opcoes"
+    })
     defineOpcoes({acoes: acoes}, jogador);
-    
+
     //Salva o jogador atual
     save = JSON.parse(localStorage.getItem('PlayerCCData'))
     save.personagens.filter(p=>p.id == jogador.id).map(p=>p.mochila = jogador.mochila)
@@ -188,7 +217,7 @@ function abrirMochila(jogador){
 function defineOpcoes(evento, jogador){
     try {
         evento.acoes.forEach(acao => {
-            let opcao = Array.from(document.querySelectorAll(`[class*="option"]`)).find(opt => opt.innerText.includes(acao.nome))
+            let opcao = Array.from(document.querySelectorAll(`[class*="Opcao"]`)).find(opt => opt.innerText.includes(acao.nome))
     
             if(acao.parametro && opcao){
                 if(acao.evento != null){
