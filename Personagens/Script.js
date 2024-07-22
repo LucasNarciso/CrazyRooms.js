@@ -30,6 +30,27 @@ function novoPersonagem(espacoBranco){
     let popUp = mostrarPopUp(`
         <p>Nome do personagem</p>
         <input class="campoPadrao" maxLength="18" id="inputNomePopUpAdd" type="text">
+        <div style="display:flex; flex-direction:column; align-items: start; gap:5px">
+            Aventura:
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <label for="inputAvPadrao">
+                    <input id="inputAvPadrao" class="inputRadio" type="radio" name="tipoAventura" value="padrao" checked>
+                    Padrão
+                </label>
+                <label for="inputAvPersonalizada">
+                    <input id="inputAvPersonalizada" class="inputRadio" type="radio" name="tipoAventura" value="personalizado">
+                    Personalizada
+                </label>
+                <input type="hidden" id="dataset">
+            </div>
+            <div id="DivArquivo" style="display:none;">
+                <label id="BtnEnviarArquivo">
+                    <input type="file" id="inputJSON" accept=".json">
+                    Enviar dataset
+                </label>
+                <pre id="outputFile"></pre>
+            </div>
+        </div>
         <div id="botoesPopUpAdd">
             <button id="btnCancelarPopUp" class="botaoPadrao">Cancelar</button>
             <button id="btnCriarPopUp" class="botaoPadrao">Criar</button>
@@ -37,34 +58,82 @@ function novoPersonagem(espacoBranco){
     `)
 
     document.getElementById('btnCancelarPopUp').addEventListener('click', function(){fecharPopUp(popUp)})
-    document.getElementById('btnCriarPopUp').addEventListener('click', function(){
+    document.getElementById('btnCriarPopUp').addEventListener('click', async function(){
         let nome = document.getElementById('inputNomePopUpAdd').value;
         let dadosPlayer = JSON.parse(localStorage.getItem('PlayerCCData'));
-
         let nomeIgual = dadosPlayer.personagens.find(p=>p.nome == nome)
+        let inputJson = document.getElementById('inputJSON');
+        let inputAventura = document.querySelector('[name="tipoAventura"]:checked');
+        let dataset = document.getElementById('dataset').value;
+
+        if(dataset == "" && inputAventura.value == "padrao"){
+
+            let json = await fetch('../Datasets/DatasetPadrao.json')
+                .then((response) => response.json())
+                .then((json) => json);
+            await lerDataset(json)
+
+        }
+
         if(nome && !nomeIgual){
-            dadosPlayer.personagens.push({
-                "id": parseInt(espacoBranco.value),
-                "nome": `${nome}`,
-                "mochila": [],
-                "equipados": {
-                    "Arma":"",
-                    "Armadura":"",
-                    "Arremesso":"",
-                    "Artefato 1":"",
-                    "Artefato 2":""
-                },
-                "ultimaSala": null
-            })
-            localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
-            fecharPopUp(popUp);
-            renderizaPersonagens();
-            mostrarToast("Personagem criado!")
+            if(inputJson.value == "" && inputAventura.value == "personalizado"){
+                mostrarToast('Selecione um dataset!')
+            }else {
+                dadosPlayer.personagens.push({
+                    "id": parseInt(espacoBranco.value),
+                    "nome": `${nome}`,
+                    "mochila": [],
+                    "equipados": {
+                        "Arma":"",
+                        "Armadura":"",
+                        "Arremesso":"",
+                        "Artefato 1":"",
+                        "Artefato 2":""
+                    },
+                    "dataset":document.getElementById('dataset').value,
+                    "ultimaSala": null
+                })
+                localStorage.setItem('PlayerCCData', JSON.stringify(dadosPlayer));
+                fecharPopUp(popUp);
+                renderizaPersonagens();
+                mostrarToast("Personagem criado!")
+            }
         }else if(nome && nomeIgual){
             mostrarToast('Esse nome já está sendo usado!')
         }else{
             mostrarToast('O personagem precisa de um nome!')
         }
+    })
+
+    document.getElementById('inputJSON').addEventListener('change', async function(event) {
+        let file = event.target.files[0];
+        let inputAventura = document.querySelector('[name="tipoAventura"]:checked');
+
+        if (file && inputAventura.value == "personalizado") {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    if(await lerDataset(json)){
+                        document.getElementById('outputFile').textContent = "Arquivo validado com sucesso!";
+                    }else{
+                        document.getElementById('outputFile').textContent = "Arquivo invalido!";
+                        document.getElementById('inputJSON').value = "";
+                    }
+                } catch (err) {
+                    document.getElementById('outputFile').textContent = 'Erro ao ler o arquivo JSON: ' + err.message;
+                    document.getElementById('inputJSON').value = "";
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    document.getElementById('inputAvPadrao').addEventListener('click',()=>{
+        document.getElementById('DivArquivo').style.display = "none";
+    })
+    document.getElementById('inputAvPersonalizada').addEventListener('click',()=>{
+        document.getElementById('DivArquivo').style.display = "flex";
     })
 }
 
@@ -177,6 +246,31 @@ function escolherPersonagem(personagem){
 function atualizaQtdPersonagens(){
     let personagens = JSON.parse(localStorage.getItem('PlayerCCData')).personagens;
     document.querySelector('.Quantidade').innerHTML = `${personagens.filter(p=>p.nome!="").length} / 6`
+}
+
+async function lerDataset(json){
+
+    let analise = false;
+
+    if(
+        json.recursos.armamento &&
+        json.recursos.municao &&
+        json.recursos.explosivo &&
+        json.recursos.consumivel &&
+        json.recursos.protecao &&
+        json.recursos.artefato &&
+        json.recursos.mistico &&
+        json.mensagens &&
+        json.cores
+    ){
+        console.log("Esse é o conteudo do arquivo enviado: ")
+        console.log(json)
+        analise = true;
+        document.getElementById('dataset').value = JSON.stringify(json)
+    }else{
+        analise = false;
+    }
+    return analise
 }
 
 function iniciar(){ document.body ? renderizaPersonagens() : setTimeout(iniciar, 100) }

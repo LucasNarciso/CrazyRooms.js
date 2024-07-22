@@ -1,0 +1,206 @@
+{
+    "recursos": {
+        "armamento": {
+            "valor": [30, 60],
+            "qtdMax": 1,
+            "itens": [
+                "Espada da Chama Eterna",
+                "Espada do Rei",
+                "Adaga Sombria",
+                "Adaga da Traição",
+                "Adaga de Gelo",
+                "Machado do Berserker",
+                "Machado de Guerra",
+                "Machado da Ruína",
+                "Arco do Vento Cortante",
+                "Arco da Caça",
+                "Arco da Lua",
+                "Lança Relâmpago",
+                "Lança do Vento",
+                "Martelo do Trovão"
+            ]
+        },
+        "municao":{
+            "valor":[10, 20],
+            "qtdMax": 10,
+            "itens":[
+                "Flechas Venenosas"
+            ]
+        },
+        "explosivo":{
+            "valor":[50, 70],
+            "qtdMax": 5,
+            "itens":[
+                "Granada de Fragmentação",
+                "Granada de Oxidação"
+            ]
+        },
+        "consumivel": {
+            "valor": [15, 30],
+            "qtdMax": 3,
+            "itens": [
+                "Poção de Mana",
+                "Poção de Vida",
+                "Poção de Velocidade",
+                "Poção de Resistência"
+            ]
+        },
+        "protecao": {
+            "valor": [20, 40],
+            "qtdMax": 1,
+            "itens": [
+                "Escudo de Titânio",
+                "Escudo da Luz",
+                "Escudo da Defesa",
+                "Elmo do Dragão",
+                "Elmo do Conquistador",
+                "Elmo do Guardião",
+                "Botas da Leveza",
+                "Botas da Velocidade",
+                "Botas da Agilidade",
+                "Botas Pesadas"
+            ]
+        },
+        "artefato": {
+            "valor": [50, 120],
+            "qtdMax": 1,
+            "itens": [
+                "Flechas Infinitas",
+                "Anel do Poder",
+                "Anel da Invisibilidade",
+                "Anel da Proteção",
+                "Luvas da Fúria",
+                "Luvas da Destruição",
+                "Luvas do Assassino",
+                "Amuleto da Vida Eterna",
+                "Amuleto do Tempo",
+                "Amuleto do Guerreiro",
+                "Manto das Sombras",
+                "Manto do Invisível",
+                "Manto da Noite",
+                "Bracelete da Força",
+                "Bracelete do Poder",
+                "Cinturão de Gigante",
+                "Cinturão da Resistência",
+                "Colar da Sabedoria",
+                "Colar da Fortuna",
+                "Pingente da Cura",
+                "Pingente do Vigor"
+            ]
+        },
+        "mistico": {
+            "valor": [150, 300],
+            "qtdMax": 1,
+            "itens": [
+                "Martelo dos Deuses",
+                "Espada do Destino",
+                "Cajado do Mago Supremo",
+                "Cajado do Fogo",
+                "Cajado da Terra"
+            ]
+        }
+    },
+    "mensagens": {
+        "felicitacoes":[
+            "Ai sim!",
+            "Booaa!",
+            "Olha só!",
+            "Quem diria em!",
+            "Finalmente!"
+        ],
+        "azar":[
+            "Putz!",
+            "Que pena!",
+            "Sacanagem em!",
+            "Que azar!",
+            "Falta de sorte em!",
+            "Poxa!",
+            "Não acredito!"
+        ],
+        "positivas":[
+    
+        ],
+        "vazio":[
+            "Infelizmente o que restava nesse bau saiu correndo quando abriu, e tinha oito pernas...",
+            "Não acho que esse monte de teia de aranha vai ser útil em algum momento.",
+            "Um baú armazenando vento, quem teve essa ideia brilhante?",
+            "Um baú desse tamanho pra não ter nada dentro, né possível.",
+            "Consegui passar por isso tudo pra ganhar um baú vazio.",
+            "Armazenar ar dentro de baús deve ter sido uma técnica milenar, ou algo do tipo.",
+            "Não sei o que tem mais 'vazio', esse baú ou o universo.",
+            "Um monte de nada, que maravilha!",
+            "...(barulho de vento)...",
+            "Mais um punhado de vazio pra minha coleção",
+            "Pelo menos posso ter um ratinho de pet agora, até....ele.....fu..gir.",
+            "Podia ter ignorado o bau, mas agora tem que dormir com essa."
+        ],
+        "cheio":[
+            "Olha só quanta coisa!",
+            "Espero que tenha espaço na minha mochila.",
+            "Nem sabia que dava pra guardar isso tudo em um baú.",
+            "Será que eu preciso disso tudo mesmo?",
+            "Um belo bocado de coisas por aqui.",
+            "Desde quando isso tudo de coisa cabe em um lugar tão apertado? Alô Newton?",
+            "É isso pô, é o baú do papai noel! Não tem fim!",
+            "E esse baú infinito ai?",
+            ""
+        ],
+        "quaseCheio":[
+    
+        ],
+        "umItem":[
+            "Uhul! Parabéns! Pelo unico item, dentro desse baú grande...",
+            "Tanto esforço pra um item, vida difícil!",
+            "Olha quanto item! Ah não, pera, esqueci do óculos.",
+            "99% de ar e 1% item, amo matemática..."
+        ]
+    },
+    "cores": [
+        "Amarelo",
+        "Âmbar",
+        "Anil",
+        "Azul",
+        "Bege",
+        "Bordô",
+        "Branco",
+        "Bronze",
+        "Cáqui",
+        "Caramelo",
+        "Carmesim",
+        "Castanho",
+        "Cinza",
+        "Cobre",
+        "Coral",
+        "Creme",
+        "Dourado",
+        "Grená",
+        "Índigo",
+        "Jade",
+        "Jambo",
+        "Laranja",
+        "Lavanda",
+        "Lilás",
+        "Limão",
+        "Marfim",
+        "Marrom",
+        "Mostarda",
+        "Oliva",
+        "Ouro",
+        "Pêssego",
+        "Pérola",
+        "Prata",
+        "Preto",
+        "Púrpura",
+        "Rosa",
+        "Roxo",
+        "Rubro",
+        "Salmão",
+        "Sépia",
+        "Terracota",
+        "Turquesa",
+        "Verde",
+        "Vermelho",
+        "Vinho",
+        "Violeta"
+    ]
+}

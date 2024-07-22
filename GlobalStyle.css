@@ -203,3 +203,25 @@ body{
     height: 1px;
     animation: slideIn 0.3s ease-in-out forwards;
 }
+
+
+
+/* Personalizando Input Radio */
+.inputRadio{
+    -webkit-appearance: none;
+    margin: 0;
+    appearance: none;
+    background-color: #ADA296;
+    width: 13px;
+    height: 13px;
+    border-radius: 100%;
+    border: 3px solid #ADA296;
+}
+.inputRadio:hover{
+    cursor: pointer;
+    background-color: #ada296d3;
+}
+.inputRadio:checked{
+    content: '';
+    background-color: #0F1A20;
+}
