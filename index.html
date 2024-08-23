@@ -10,10 +10,29 @@
     <link rel="manifest" href="./manifest.json" />
 
     <script src="GlobalScript.js"></script>
+    <!-- Teste de Botão de Download: -->
+    <script>
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+        });
+    
+        const installApp = document.getElementById('installApp');
+        installApp.addEventListener('click', async () => {
+            if (deferredPrompt !== null) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="conteiner" style="align-items: center; justify-content: center;">
-        <button class="botaoCheio" onclick="goOn('ir','menu')">Começar</button>
+        <button class="botaoCheio" onclick="goOn('ir','menu')">Versão Web</button>
+        <button id="installApp">Instalar</button>
     </div>
 </body>
 </html>
