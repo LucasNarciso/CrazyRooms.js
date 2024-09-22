@@ -253,13 +253,14 @@ async function lerDataset(json){
     let analise = false;
 
     if(
-        json.recursos.armamento &&
-        json.recursos.municao &&
-        json.recursos.explosivo &&
-        json.recursos.consumivel &&
-        json.recursos.protecao &&
-        json.recursos.artefato &&
-        json.recursos.mistico &&
+        json.recursos.tipos.armamento &&
+        json.recursos.tipos.municao &&
+        json.recursos.tipos.explosivo &&
+        json.recursos.tipos.consumivel &&
+        json.recursos.tipos.protecao &&
+        json.recursos.tipos.artefato &&
+        json.recursos.tipos.mistico &&
+        json.recursos.atributos &&
         json.mensagens &&
         json.cores
     ){

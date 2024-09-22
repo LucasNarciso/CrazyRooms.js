@@ -1,104 +1,109 @@
 {
     "recursos": {
-        "armamento": {
-            "valor": [30, 60],
-            "qtdMax": 1,
-            "itens": [
-                "Espada da Chama Eterna",
-                "Espada do Rei",
-                "Adaga Sombria",
-                "Adaga da Traição",
-                "Adaga de Gelo",
-                "Machado do Berserker",
-                "Machado de Guerra",
-                "Machado da Ruína",
-                "Arco do Vento Cortante",
-                "Arco da Caça",
-                "Arco da Lua",
-                "Lança Relâmpago",
-                "Lança do Vento",
-                "Martelo do Trovão"
-            ]
+        "tipos":{
+            "armamento": {
+                "valor": [30, 60],
+                "qtdMax": 1,
+                "itens": [
+                    "Espada da Chama Eterna",
+                    "Espada do Rei",
+                    "Adaga Sombria",
+                    "Adaga da Traição",
+                    "Adaga de Gelo",
+                    "Machado do Berserker",
+                    "Machado de Guerra",
+                    "Machado da Ruína",
+                    "Arco do Vento Cortante",
+                    "Arco da Caça",
+                    "Arco da Lua",
+                    "Lança Relâmpago",
+                    "Lança do Vento",
+                    "Martelo do Trovão"
+                ]
+            },
+            "municao":{
+                "valor":[10, 20],
+                "qtdMax": 10,
+                "itens":[
+                    "Flechas Venenosas"
+                ]
+            },
+            "explosivo":{
+                "valor":[50, 70],
+                "qtdMax": 5,
+                "itens":[
+                    "Granada de Fragmentação",
+                    "Granada de Oxidação"
+                ]
+            },
+            "consumivel": {
+                "valor": [15, 30],
+                "qtdMax": 3,
+                "itens": [
+                    "Poção de Mana",
+                    "Poção de Vida",
+                    "Poção de Velocidade",
+                    "Poção de Resistência"
+                ]
+            },
+            "protecao": {
+                "valor": [20, 40],
+                "qtdMax": 1,
+                "itens": [
+                    "Escudo de Titânio",
+                    "Escudo da Luz",
+                    "Escudo da Defesa",
+                    "Elmo do Dragão",
+                    "Elmo do Conquistador",
+                    "Elmo do Guardião",
+                    "Botas da Leveza",
+                    "Botas da Velocidade",
+                    "Botas da Agilidade",
+                    "Botas Pesadas"
+                ]
+            },
+            "artefato": {
+                "valor": [50, 120],
+                "qtdMax": 1,
+                "itens": [
+                    "Flechas Infinitas",
+                    "Anel do Poder",
+                    "Anel da Invisibilidade",
+                    "Anel da Proteção",
+                    "Luvas da Fúria",
+                    "Luvas da Destruição",
+                    "Luvas do Assassino",
+                    "Amuleto da Vida Eterna",
+                    "Amuleto do Tempo",
+                    "Amuleto do Guerreiro",
+                    "Manto das Sombras",
+                    "Manto do Invisível",
+                    "Manto da Noite",
+                    "Bracelete da Força",
+                    "Bracelete do Poder",
+                    "Cinturão de Gigante",
+                    "Cinturão da Resistência",
+                    "Colar da Sabedoria",
+                    "Colar da Fortuna",
+                    "Pingente da Cura",
+                    "Pingente do Vigor"
+                ]
+            },
+            "mistico": {
+                "valor": [150, 300],
+                "qtdMax": 1,
+                "itens": [
+                    "Martelo dos Deuses",
+                    "Espada do Destino",
+                    "Cajado do Mago Supremo",
+                    "Cajado do Fogo",
+                    "Cajado da Terra"
+                ]
+            }
         },
-        "municao":{
-            "valor":[10, 20],
-            "qtdMax": 10,
-            "itens":[
-                "Flechas Venenosas"
-            ]
-        },
-        "explosivo":{
-            "valor":[50, 70],
-            "qtdMax": 5,
-            "itens":[
-                "Granada de Fragmentação",
-                "Granada de Oxidação"
-            ]
-        },
-        "consumivel": {
-            "valor": [15, 30],
-            "qtdMax": 3,
-            "itens": [
-                "Poção de Mana",
-                "Poção de Vida",
-                "Poção de Velocidade",
-                "Poção de Resistência"
-            ]
-        },
-        "protecao": {
-            "valor": [20, 40],
-            "qtdMax": 1,
-            "itens": [
-                "Escudo de Titânio",
-                "Escudo da Luz",
-                "Escudo da Defesa",
-                "Elmo do Dragão",
-                "Elmo do Conquistador",
-                "Elmo do Guardião",
-                "Botas da Leveza",
-                "Botas da Velocidade",
-                "Botas da Agilidade",
-                "Botas Pesadas"
-            ]
-        },
-        "artefato": {
-            "valor": [50, 120],
-            "qtdMax": 1,
-            "itens": [
-                "Flechas Infinitas",
-                "Anel do Poder",
-                "Anel da Invisibilidade",
-                "Anel da Proteção",
-                "Luvas da Fúria",
-                "Luvas da Destruição",
-                "Luvas do Assassino",
-                "Amuleto da Vida Eterna",
-                "Amuleto do Tempo",
-                "Amuleto do Guerreiro",
-                "Manto das Sombras",
-                "Manto do Invisível",
-                "Manto da Noite",
-                "Bracelete da Força",
-                "Bracelete do Poder",
-                "Cinturão de Gigante",
-                "Cinturão da Resistência",
-                "Colar da Sabedoria",
-                "Colar da Fortuna",
-                "Pingente da Cura",
-                "Pingente do Vigor"
-            ]
-        },
-        "mistico": {
-            "valor": [150, 300],
-            "qtdMax": 1,
-            "itens": [
-                "Martelo dos Deuses",
-                "Espada do Destino",
-                "Cajado do Mago Supremo",
-                "Cajado do Fogo",
-                "Cajado da Terra"
-            ]
-        }
+        "atributos":[
+            
+        ]
     },
     "mensagens": {
         "felicitacoes":[

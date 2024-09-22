@@ -1,19 +1,33 @@
+class jogo {
+
+    constructor(jogador, sala){
+        this.jogador = jogador;
+        this.sala = sala;
+    }
+}
+
 class sala {
     eventosSala = [];
     acoes = [];
     ambiente = {};
+    cores = [];
 
-    constructor(sala){
-        if(sala){
-            this.id = sala.id;
-            this.eventosSala = this.instanciarEventos(sala.eventosSala);
-            this.ambiente = sala.ambiente;
-            this.numero = sala.numero;
-        }else{
+    
+    constructor(Jogo, nova){
+        let salaAtual = Jogo.sala;
+
+        if(nova){
             this.id = Math.random();
             this.eventosSala = this.definirEventos();
             this.ambiente = this.definirAmbiente();
             this.numero = 1;
+            this.cores = Jogo.jogador.dataset.cores;
+        }else{
+            this.id = salaAtual.id;
+            this.eventosSala = this.instanciarEventos(Jogo, salaAtual.eventosSala);
+            this.ambiente = salaAtual.ambiente;
+            this.numero = salaAtual.numero;
+            this.cores = salaAtual.cores;
         }
     }
 
@@ -40,7 +54,7 @@ class sala {
         return eventosEscolhidos;
     }
 
-    instanciarEventos(eventosParametro){
+    instanciarEventos(Jogo, eventosParametro){
         let eventosEscolhidos = []
 
         eventosParametro.forEach((evento)=>{
@@ -65,15 +79,11 @@ class jogador {
         this.mochila = jogador.mochila;
         this.equipados = jogador.equipados;
         this.ultimaSala = null;
+        this.dataset = JSON.parse(jogador.dataset);
     }
 
-    abrirMochila(){
-
-    }
-
-    pegarItens(itens){
-
-        let evento = this.ultimaSala.eventosSala.find(e=>e.itens.find(i=>i.id == itens[0].id))
+    pegarItens(Jogo, itens){
+        let evento = Jogo.sala.eventosSala.find(e=>e.itens.find(i=>i.id == itens[0].id))
         let qtd = 0;
         if(itens.length == 0){
             qtd = 1
@@ -90,7 +100,7 @@ class jogador {
 
         evento.itens = itens;
 
-        abrirSala(this, false);
+        abrirSala(Jogo, false);
     }
 }
 
@@ -114,21 +124,22 @@ class bau {
         }
     }
 
-    abrirBau(jogador){
+    abrirBau(Jogo){
+        let jogador = Jogo.jogador;
         let itensFormatados = [];
         let acoes = []
         
         if(!this.aberto){
             this.qtdItens = escolherValor(0, 4);
-            this.itens = this.gerarItens();
+            this.itens = this.gerarItens(Jogo);
             this.aberto = true;
             
             if(this.qtdItens == 0){
-                this.mensagemUm = mensagens.vazio[escolherValor(0, mensagens.vazio.length-1)];
+                this.mensagemUm = jogador.dataset.mensagens.vazio[escolherValor(0, jogador.dataset.mensagens.vazio.length-1)];
             }else if(this.qtdItens == 1){
-                this.mensagemUm = mensagens.umItem[escolherValor(0, mensagens.umItem.length-1)];
+                this.mensagemUm = jogador.dataset.mensagens.umItem[escolherValor(0, jogador.dataset.mensagens.umItem.length-1)];
             }else{
-                this.mensagemUm = mensagens.cheio[escolherValor(0, mensagens.cheio.length-1)];
+                this.mensagemUm = jogador.dataset.mensagens.cheio[escolherValor(0, jogador.dataset.mensagens.cheio.length-1)];
             }
         }
         
@@ -143,7 +154,7 @@ class bau {
                 }
                 itensFormatados.push(item)
             }
-            acoes.push( {nome:"Coletar item", funcao:"pegarItens", evento:jogador, parametro:this.itens} )
+            acoes.push( {nome:"Coletar item", funcao:"pegarItens", evento:jogador, parametro:{Jogo: Jogo, param:this.itens}} )
         }else if(this.itens.length > 0){
             // itensFormatados = this.itens.map((i)=>{ return i.qtd == 1 ? i.nome : i.nome + ` (${i.qtd})` })
             for (let i = 0; i < 4; i++) {
@@ -155,38 +166,42 @@ class bau {
                 }
                 itensFormatados.push(item)
             }
-            acoes.push( {nome:"Coletar tudo", funcao:"pegarItens", evento:jogador, parametro:this.itens} )
+            acoes.push( {nome:"Coletar tudo", funcao:"pegarItens", evento:jogador, parametro:{Jogo: Jogo, param:this.itens}} )
         }else{
             itensFormatados = ["","","",""]
         }
 
         limparTerminal()
 
-        escreverNoTerminal({
+        renderizar({
             texto: this.mensagemUm, 
             lista: itensFormatados,
             tipoOpt: "-",
             tipoLista: "lista"
         })
 
-        acoes.push( {nome:"Voltar", funcao:abrirSala, evento:null} );
+        acoes.push( {nome:"Voltar", funcao:()=>{abrirSala(Jogo, false)}, evento:null} );
 
-        escreverNoTerminal({
+        renderizar({
             texto: `O que deseja fazer agora?`, 
             lista: acoes.map(a=>a.nome),
             tipoLista: "opcoes"
         })
 
         defineOpcoes({acoes: acoes}, jogador);
+
+        //Atualizando Baú da Sala
+        Jogo.sala.eventosSala[Jogo.sala.eventosSala.indexOf(Jogo.sala.eventosSala.find(e=>e.nome == this.nome))] = this;
     }
 
-    gerarItens(){
+    gerarItens(Jogo){
+        let jogador = Jogo.jogador;
         let itensGerados = [];
-
+        console.log(jogador)
         for (let i = 0; i < this.qtdItens; i++) {
-            let tipo = Object.keys(recursos)[escolherValor(0, Object.keys(recursos).length-1)];
-            const novoItem = recursos[tipo].itens[escolherValor(0, recursos[tipo].itens.length-1)];
-            itensGerados.push(new item(novoItem, recursos[tipo].valor, tipo, recursos[tipo].qtdMax))
+            let tipo = Object.keys(jogador.dataset.recursos.tipos)[escolherValor(0, Object.keys(jogador.dataset.recursos.tipos).length-1)];
+            const novoItem = jogador.dataset.recursos.tipos[tipo].itens[escolherValor(0, jogador.dataset.recursos.tipos[tipo].itens.length-1)];
+            itensGerados.push(new item(novoItem, jogador.dataset.recursos.tipos[tipo].valor, tipo, jogador.dataset.recursos.tipos[tipo].qtdMax))
         }
         return itensGerados;
     }
@@ -194,15 +209,14 @@ class bau {
 
 class item {
 
-    constructor(nome, valor, tipo, qtd){
-        let qtdItem = escolherValor(1, qtd);
-        this.valor = pesoPonderado(valor[0], valor[1]);
-        this.nome = nome;
-        this.tipo = tipo;
-        this.qtd = qtdItem;
+    constructor(nome, valores, tipo, qtd){
         this.id = Math.random();
+        this.nome = nome;
+        this.qtd = escolherValor(1, qtd);
+        this.valor = pesoPonderado(valores[0], valores[1]);
+        this.tipo = tipo;
+        this.filtro = ["id"];
     }
-
 }
 
 const eventos = [
