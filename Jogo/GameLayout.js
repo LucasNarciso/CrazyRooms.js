@@ -82,7 +82,7 @@ function renderizarDetalhesItens(item){
     return `
         <p>Nome: ${item.nome}</p>
         <p>Quantidade: ${item.qtd}</p>
-        <p>Tipo: ${item.tipo}</p>
+        <p>Tipo: ${item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1)}</p>
         <p>Valor: ${item.valor}</p>
     `
 }
@@ -165,7 +165,6 @@ async function escreveTexto3(config, elementoListaAdd){
             elementoListaAdd && Array.from(destino.querySelectorAll('p')).at(-1).insertAdjacentHTML('beforeEnd', elementoListaAdd);
         }
 
-        debugger
         if(config.texto.length == 0){
             destino.insertAdjacentHTML('beforeEnd',`${
                 `<p class="texto"> Vazio...</p>`
